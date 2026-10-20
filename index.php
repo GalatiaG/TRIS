@@ -10,6 +10,9 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
+// connessione al database
+$conn = @new mysqli("localhost", "root", "", "tictactoe");
+
 if (!isset($_SESSION['board'])) {
     $_SESSION['board'] = array_fill(0, 9, '');
     $_SESSION['wins'] = 0;
@@ -76,7 +79,36 @@ if (isset($_POST['cell']) && $_SESSION['game_active'] && $stato === null) {
         if ($stato === 'X') $_SESSION['wins']++;
         elseif ($stato === 'O') $_SESSION['losses']++;
         elseif ($stato === 'pareggio') $_SESSION['draws']++;
+
+        // salvo il risultato della partita nel database
+        if (!$conn->connect_error && $stato !== null) {
+            if ($stato === 'X') {
+                $sql = "UPDATE giocatori SET vittorie = vittorie + 1 WHERE username = ?";
+            } elseif ($stato === 'O') {
+                $sql = "UPDATE giocatori SET sconfitte = sconfitte + 1 WHERE username = ?";
+            } else {
+                $sql = "UPDATE giocatori SET pareggi = pareggi + 1 WHERE username = ?";
+            }
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $stmt->close();
+        }
     }
+}
+
+// leggo dal database il punteggio totale del giocatore
+if (!$conn->connect_error) {
+    $stmt = $conn->prepare("SELECT vittorie, sconfitte, pareggi FROM giocatori WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($vittorie, $sconfitte, $pareggi);
+    if ($stmt->fetch()) {
+        $_SESSION['wins'] = $vittorie;
+        $_SESSION['losses'] = $sconfitte;
+        $_SESSION['draws'] = $pareggi;
+    }
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
