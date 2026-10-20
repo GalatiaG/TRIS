@@ -112,7 +112,7 @@ if (isset($conn) && $conn instanceof mysqli) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tris Lavagna - Login</title>
     <style>
-        /* CSS INTEGRATO STRUTTURALE - Rimpiazza e forza lo stile della lavagna */
+        /* STILE LAVAGNA */
         body {
             background-color: #2c3e50;
             font-family: 'Courier New', Courier, monospace;
@@ -335,7 +335,7 @@ if (isset($conn) && $conn instanceof mysqli) {
             }
         }
 
-        // Imposta lo stato iniziale generato dal server
+        // mostra la schermata giusta (login o registrazione)
         changeScreen('<?php echo $schermata_attiva; ?>');
     </script>
 </body>

@@ -18,17 +18,8 @@ CREATE TABLE `giocatori` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Inserimento utenti iniziali (le password rispettano i criteri di sicurezza dell'esame)
+-- Utenti di prova
 INSERT INTO `giocatori` (`id`, `username`, `password`, `vittorie`, `sconfitte`, `pareggi`) VALUES
 (1, 'studente_test', 'Ancona@2026', 5, 2, 3),
 (2, 'giocatore1', 'Milano#99!', 12, 4, 6);
-
--- Struttura tabella per il controllo dei tentativi di richiesta (Sicurezza Anti-Flood)
-CREATE TABLE IF NOT EXISTS `login_attempts` (
-  `ip_address` varchar(45) NOT NULL,
-  `attempts` int(11) NOT NULL DEFAULT 1,
-  `last_attempt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`ip_address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 COMMIT;
