@@ -59,7 +59,7 @@ $tipo_vittoria = $risultato_dettagli['tipo'];
 
 if (isset($_POST['cell']) && $_SESSION['game_active'] && $stato === null) {
     $idx = (int)$_POST['cell'];
-    if ($_SESSION['board'][$idx] === '') {
+    if ($idx >= 0 && $idx <= 8 && $_SESSION['board'][$idx] === '') {
         $_SESSION['board'][$idx] = 'X';
         
         $risultato_dettagli = controlla_vittoria_dettagli($_SESSION['board']);
@@ -302,9 +302,7 @@ if (!$conn->connect_error) {
         <?php if (!$_SESSION['game_active']): ?>
             <form method="POST" action="">
                 <div class="setup-box">
-                    <div class="form-group-chalk"><label>MODALITÀ DI GIOCO:</label><select name="modalita"><option value="computer">SFIDA COMPUTER</option></select></div>
                     <div class="form-group-chalk"><label>NOME GIOCATORE 1 (X):</label><input type="text" value="<?php echo htmlspecialchars($username); ?>" readonly></div>
-                    <div class="form-group-chalk"><label>NOME GIOCATORE 2 (O):</label><input type="text" placeholder="LASCIA VUOTO PER COMPUTER" readonly></div>
                     <div class="btn-row" style="margin-top:20px;">
                         <button type="submit" name="start" class="btn-verde-start">START</button>
                         <button type="submit" name="logout" class="btn-rosso-logout">LOG OUT</button>
@@ -322,7 +320,7 @@ if (!$conn->connect_error) {
             <p class="status-text">
                 <?php 
                 if ($stato === 'X') {
-                    echo "Hai vinto Tu!";
+                    echo "Hai vinto!";
                 } elseif ($stato === 'O') {
                     echo "Ha vinto Computer!";
                 } elseif ($stato === 'pareggio') {

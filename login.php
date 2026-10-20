@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errore)) {
                     $stmt->bind_result($password_salvata);
                     $stmt->fetch();
 
-                    if ($pass === $password_salvata || password_verify($pass, $password_salvata)) {
+                    if (password_verify($pass, $password_salvata)) {
                         session_regenerate_id(true);
                         $_SESSION['username'] = $user;
                         $_SESSION['board'] = array_fill(0, 9, '');
@@ -72,6 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errore)) {
             $errore = "Tutti i campi sono obbligatori!";
         } elseif ($captcha_utente !== $captcha_corretto) {
             $errore = "ERRORE: VERIFICA UMANA FALLITA! IL CODICE È ERRATO.";
+        } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!$])[A-Za-z\d@#!$]{8,12}$/', $new_pass)) {
+            // stessi requisiti scritti sotto il campo password
+            $errore = "La password non rispetta i requisiti!";
         } else {
             $check = $conn->prepare("SELECT id FROM giocatori WHERE username = ?");
             $check->bind_param("s", $new_user);

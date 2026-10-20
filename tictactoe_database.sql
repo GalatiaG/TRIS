@@ -20,6 +20,6 @@ CREATE TABLE `giocatori` (
 
 -- Utenti di prova
 INSERT INTO `giocatori` (`id`, `username`, `password`, `vittorie`, `sconfitte`, `pareggi`) VALUES
-(1, 'studente_test', 'Ancona@2026', 5, 2, 3),
-(2, 'giocatore1', 'Milano#99!', 12, 4, 6);
+(1, 'studente_test', '$2y$10$c13Yml8ZgVshxJw0GA/LmOvfKHAzrvmCeziWGcZ5lVrQMvDI7J4nu', 5, 2, 3),
+(2, 'giocatore1', '$2y$10$i6d9Yt4822rSf6Y7MXebCeJpVamhLMTCUfh.P31w.TqfRozi8xJpW', 12, 4, 6);
 COMMIT;
